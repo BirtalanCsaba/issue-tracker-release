@@ -1,15 +1,22 @@
 version: '3.9'
 services:
-  nginx:
-    image: conference-nginx
+  postgres:
+    image: 'postgres:16.1-alpine3.18'
     restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: "test123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./pgdata-release:/var/lib/postgresql/data
     ports:
-      - '4300:80'
-      - '5005:5005'
-    depends_on:
-      - api
-      - client
-    command: nginx -g 'daemon off;'
+      - "5435:5432"
+  client:
+    image: issue-tracker-client
+    restart: always
+    build: 
+      dockerfile: Dockerfile
+      context: ../issue-tracker-client
+    ports:
+      - 2000:80
+      - 2001:443
