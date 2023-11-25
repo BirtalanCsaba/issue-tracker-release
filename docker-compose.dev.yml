@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  postgres:
+    image: 'postgres:16.1-alpine3.18'
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: "test123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+  web:
+    image: issue-tracker-web
+  client:
+    image: issues-tracker-client
+

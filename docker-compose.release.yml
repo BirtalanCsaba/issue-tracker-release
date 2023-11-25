@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  nginx:
+    image: conference-nginx
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '4300:80'
+      - '5005:5005'
+    depends_on:
+      - api
+      - client
+    command: nginx -g 'daemon off;'
