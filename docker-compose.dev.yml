@@ -10,8 +10,25 @@ services:
       - ./pgdata:/var/lib/postgresql/data
     ports:
       - "5435:5432"
-  # web:
-  #   image: issue-tracker-web
+  web:
+    image: issue-tracker-web
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ../issue-tracker-web
+    volumes:
+      - ../issue-tracker-web/:/usr/app/
+      - /wildfly-persist/:/bitnami/wildfly
+      - /wildfly-conf/standalone.xml:/bitnami/wildfly/configuration/standalone.xml
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+      - "8787:8787"
+    depends_on:
+      - postgres
+    environment:
+      - WILDFLY_USERNAME=admin
+      - WILDFLY_PASSWORD=admin
+      - WILDFLY_MANAGEMENT_LISTEN_ADDRESS=localhost
   client:
     image: issue-tracker-client
     build:
@@ -22,5 +39,6 @@ services:
       - ../issue-tracker-client/:/usr/app/
     ports:
       - "3000:3000"
-
-
+  mail-server:
+    image: 'postfixadmin:3.3.13-fpm-alpine'
+    restart: always

@@ -20,3 +20,24 @@ services:
     ports:
       - 2000:80
       - 2001:443
+  web:
+    image: issue-tracker-web
+    build: 
+      dockerfile: Dockerfile
+      context: ../issue-tracker-web
+    volumes:
+      - ../issue-tracker-web/:/usr/app/
+      - /wildfly-persist/:/bitnami/wildfly
+      - /wildfly-conf/standalone.xml:/bitnami/wildfly/configuration/standalone.xml
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    depends_on:
+      - postgres
+    environment:
+      - WILDFLY_USERNAME=admin
+      - WILDFLY_PASSWORD=admin
+      - WILDFLY_MANAGEMENT_LISTEN_ADDRESS=localhost
+  mail-server:
+    image: 'postfixadmin:3.3.13-fpm-alpine'
+    restart: always
