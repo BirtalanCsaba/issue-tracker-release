@@ -38,6 +38,22 @@ services:
       - WILDFLY_USERNAME=admin
       - WILDFLY_PASSWORD=admin
       - WILDFLY_MANAGEMENT_LISTEN_ADDRESS=localhost
+  mail-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: postfixadmin
+      MYSQL_USER: postfixadmin
+      MYSQL_PASSWORD: example
   mail-server:
     image: 'postfixadmin:3.3.13-fpm-alpine'
     restart: always
+    depends_on:
+      - mail-db
+    environment:
+      POSTFIXADMIN_DB_TYPE: mysqli
+      POSTFIXADMIN_DB_HOST: mail-db
+      POSTFIXADMIN_DB_USER: postfixadmin
+      POSTFIXADMIN_DB_NAME: postfixadmin
+      POSTFIXADMIN_DB_PASSWORD: example
