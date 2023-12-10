@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: "test123"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./postgres-vol:/var/lib/postgresql/data
     ports:
       - "5435:5432"
   web:
@@ -39,3 +39,5 @@ services:
       - ../issue-tracker-client/:/usr/app/
     ports:
       - "3000:3000"
+volumes:
+  postgres-vol:
