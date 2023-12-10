@@ -39,14 +39,3 @@ services:
       - ../issue-tracker-client/:/usr/app/
     ports:
       - "3000:3000"
-  mail-server:
-    image: mail-server
-    build:
-      dockerfile: Dockerfile
-      context: ./mail-server
-      args:
-        EMAIL: csabi@adventureseekers.go.ro
-        EMAIL_PASSWORD: test123
-        MAIL_NAME: csabi@adventureseekers.go.ro
-        SMTP_DOMAIN: smtp.gmail.com
-        SMTP_PORT: 25
