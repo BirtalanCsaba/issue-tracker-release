@@ -40,3 +40,9 @@ services:
       - "3000:3000"
 volumes:
   postgres-vol:
+  issue-tracker-client:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ../issue-tracker-client
